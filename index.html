@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وكيلي الذكي — أسامة محمودي</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--bg2:#1a1d27;--bg3:#22263a;--border:#2e3350;--text:#e8eaf6;--muted:#7c85b3;--accent:#6c63ff;--accent2:#a78bfa;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--teal:#14b8a6}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+.app{display:flex;flex-direction:column;min-height:100vh}
+.nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;height:56px;position:sticky;top:0;z-index:50}
+.nav-brand{font-size:15px;font-weight:600;color:var(--accent2);margin-left:auto;display:flex;align-items:center;gap:8px}
+.nav-tabs{display:flex;gap:0;margin-right:32px}
+.tab{padding:0 16px;height:56px;display:flex;align-items:center;font-size:13px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;gap:6px}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent2);border-bottom-color:var(--accent2)}
+.tab i{font-size:15px}
+.main{flex:1;padding:24px;max-width:900px;width:100%;margin:0 auto}
+.section{display:none}
+.section.active{display:block}
+.search-hero{text-align:center;padding:40px 0 28px}
+.search-hero h1{font-size:24px;font-weight:600;margin-bottom:10px}
+.search-hero p{font-size:14px;color:var(--muted);line-height:1.7}
+.btn-search{background:linear-gradient(135deg,var(--accent),var(--teal));color:#fff;border:none;padding:14px 40px;border-radius:50px;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:10px;margin-top:24px;transition:opacity .2s}
+.btn-search:hover{opacity:.88}
+.btn-search:disabled{opacity:.45;cursor:not-allowed}
+.status-bar{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:24px;display:none}
+.status-bar.show{display:block}
+.progress-bar{width:100%;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-top:10px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--teal));border-radius:2px;transition:width .5s ease;width:0%}
+.status-steps{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.step{display:flex;align-items:center;gap:12px;font-size:13px}
+.step-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.step-icon.done{background:#22c55e22;color:var(--green)}
+.step-icon.active{background:#6c63ff22;color:var(--accent2)}
+.step-icon.wait{background:#ffffff10;color:var(--muted)}
+.step-label.active{color:var(--text)}
+.step-label.done{color:var(--green)}
+.step-label{color:var(--muted)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:600px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center}
+.stat-num{font-size:26px;font-weight:600;margin-bottom:6px}
+.stat-label{font-size:12px;color:var(--muted)}
+.stat-num.purple{color:var(--accent2)}
+.stat-num.green{color:var(--green)}
+.stat-num.amber{color:var(--amber)}
+.stat-num.teal{color:var(--teal)}
+.alert{padding:14px 18px;border-radius:10px;font-size:13px;margin-bottom:18px;line-height:1.6}
+.alert.info{background:#6c63ff15;border:1px solid #6c63ff30;color:var(--accent2)}
+.alert.err{background:#ef444415;border:1px solid #ef444430;color:var(--red)}
+.alert.ok{background:#22c55e15;border:1px solid #22c55e30;color:var(--green)}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.results-header h2{font-size:15px;font-weight:500}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap}
+.filter-btn{background:var(--bg2);border:1px solid var(--border);color:var(--muted);padding:5px 14px;border-radius:20px;font-size:12px;cursor:pointer;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.opp-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px;cursor:pointer;transition:border-color .2s}
+.opp-card:hover{border-color:var(--accent)}
+.opp-card.aplus{border-right:3px solid var(--green)}
+.opp-card.a{border-right:3px solid var(--teal)}
+.opp-card.b{border-right:3px solid var(--amber)}
+.opp-card.c{border-right:3px solid var(--muted)}
+.opp-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.opp-title{font-size:14px;font-weight:500;line-height:1.4;margin-bottom:8px}
+.opp-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
+.badge.type{background:#6c63ff20;color:var(--accent2)}
+.badge.funded{background:#22c55e20;color:var(--green)}
+.badge.remote{background:#14b8a620;color:var(--teal)}
+.badge.deadline{background:#f59e0b20;color:var(--amber)}
+.score-circle{min-width:54px;height:54px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid}
+.score-circle.aplus{border-color:var(--green)}
+.score-circle.a{border-color:var(--teal)}
+.score-circle.b{border-color:var(--amber)}
+.score-circle.c{border-color:var(--muted)}
+.score-num{font-size:16px;font-weight:700;line-height:1}
+.score-grade{font-size:10px;color:var(--muted);margin-top:2px}
+.opp-reason{font-size:12px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);line-height:1.6}
+.opp-footer{display:flex;gap:8px;margin-top:10px;align-items:center}
+.btn-sm{font-size:12px;padding:5px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;text-decoration:none}
+.btn-sm:hover{border-color:var(--accent);color:var(--accent2)}
+.empty-state{text-align:center;padding:70px 20px;color:var(--muted)}
+.empty-state i{font-size:44px;margin-bottom:18px;display:block}
+.empty-state p{font-size:14px;line-height:1.7}
+.profile-section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px}
+.profile-section h3{font-size:14px;font-weight:500;margin-bottom:18px;color:var(--accent2);display:flex;align-items:center;gap:8px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:500px){.form-row{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:2px}
+.form-group label{font-size:12px;color:var(--muted)}
+.form-group input,.form-group textarea,.form-group select{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:9px 13px;border-radius:8px;font-size:13px;outline:none;width:100%;font-family:inherit;direction:rtl;transition:border-color .2s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--accent)}
+.form-group textarea{resize:vertical;min-height:90px;line-height:1.6}
+.form-group select option{background:var(--bg2)}
+.btn-save{background:var(--accent);color:#fff;border:none;padding:11px 26px;border-radius:9px;font-size:13px;cursor:pointer;transition:opacity .2s;display:inline-flex;align-items:center;gap:8px;margin-top:4px}
+.btn-save:hover{opacity:.88}
+.key-section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px}
+.key-section h3{font-size:14px;font-weight:500;margin-bottom:14px;color:var(--accent2);display:flex;align-items:center;gap:8px}
+.key-input-row{display:flex;gap:8px}
+.key-input-row input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:9px 13px;border-radius:8px;font-size:13px;outline:none;direction:ltr;transition:border-color .2s}
+.key-input-row input:focus{border-color:var(--accent)}
+.key-status{font-size:12px;margin-top:10px;padding:9px 14px;border-radius:8px}
+.key-status.ok{background:#22c55e15;color:var(--green)}
+.key-status.err{background:#ef444415;color:var(--red)}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:#000000bb;display:none;align-items:flex-start;justify-content:center;z-index:200;padding:24px;overflow-y:auto}
+.modal-overlay.show{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:26px;max-width:600px;width:100%;margin:auto;direction:rtl}
+.modal h2{font-size:16px;font-weight:500;margin-bottom:18px;line-height:1.4}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.modal-grid{grid-template-columns:1fr}}
+.info-item{background:var(--bg3);padding:12px 14px;border-radius:9px}
+.info-label{font-size:11px;color:var(--muted);margin-bottom:5px}
+.info-val{font-size:13px;font-weight:500;line-height:1.5}
+.btn-close{background:none;border:1px solid var(--border);color:var(--muted);padding:9px 22px;border-radius:9px;cursor:pointer;font-size:13px;font-family:inherit}
+.btn-close:hover{border-color:var(--accent);color:var(--text)}
+.btn-link{background:var(--accent);color:#fff;border:none;padding:9px 22px;border-radius:9px;cursor:pointer;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+.btn-link:hover{opacity:.88}
+.spinner{width:17px;height:17px;border:2px solid #ffffff40;border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;padding:11px 22px;border-radius:9px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="div class="toast" id="toast"></div>
+<div class="app">
+<nav class="nav">
+  <div class="nav-brand"><i class="ti ti-rocket"></i>وكيلي الذكي</div>
+  <div class="nav-tabs">
+    <div class="tab active" onclick="showTab('search')" id="tab-search"><i class="ti ti-search"></i>البحث</div>
+    <div class="tab" onclick="showTab('results')" id="tab-results"><i class="ti ti-list"></i>الفرص</div>
+    <div class="tab" onclick="showTab('profile')" id="tab-profile"><i class="ti ti-user"></i>ملفي</div>
+    <div class="tab" onclick="showTab('settings')" id="tab-settings"><i class="ti ti-settings"></i>الإعدادات</div>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- SEARCH TAB -->
+<div class="section active" id="section-search">
+  <div class="search-hero">
+    <h1>مرحباً يا أسامة 👋</h1>
+    <p>وكيلك الذكي جاهز للبحث عن أفضل الفرص الأكاديمية والمهنية<br>المناسبة تماماً لملفك الشخصي</p>
+    <button class="btn-search" id="searchBtn" onclick="startSearch()">
+      <i class="ti ti-sparkles"></i>
+      البحث عن فرص جديدة
+    </button>
+    <div style="margin-top:14px;font-size:12px;color:var(--muted)" id="lastRun"></div>
+  </div>
+
+  <div class="status-bar" id="statusBar">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:13px;font-weight:500" id="statusTitle">جاري البحث...</span>
+      <span style="font-size:12px;color:var(--muted)" id="statusPercent">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="status-steps" id="statusSteps"></div>
+  </div>
+
+  <div id="dashboardArea" style="display:none">
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="alert info" id="topAlert"></div>
+  </div>
+</div>
+
+<!-- RESULTS TAB -->
+<div class="section" id="section-results">
+  <div class="results-header">
+    <h2 id="resultsCount">الفرص المكتشفة</h2>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="filterOpps('all',this)">الكل</button>
+      <button class="filter-btn" onclick="filterOpps('A+',this)">⭐ A+</button>
+      <button class="filter-btn" onclick="filterOpps('A',this)">A</button>
+      <button class="filter-btn" onclick="filterOpps('B',this)">B</button>
+      <button class="filter-btn" onclick="filterOpps('منحة',this)">منح</button>
+      <button class="filter-btn" onclick="filterOpps('مؤتمر',this)">مؤتمرات</button>
+      <button class="filter-btn" onclick="filterOpps('تطوع',this)">تطوع</button>
+    </div>
+  </div>
+  <div id="oppsList">
+    <div class="empty-state">
+      <i class="ti ti-search"></i>
+      <p>لم يتم البحث بعد.<br>اذهب إلى تبويب البحث واضغط على الزر للبدء.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE TAB -->
+<div class="section" id="section-profile">
+  <div class="profile-section">
+    <h3><i class="ti ti-id-badge"></i>المعلومات الأساسية</h3>
+    <div class="form-row">
+      <div class="form-group"><label>الاسم الكامل</label><input id="pName" value="أسامة محمودي"></div>
+      <div class="form-group"><label>التخصص</label><input id="pMajor" value="طب بيطري"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>المستوى الدراسي</label>
+        <select id="pLevel">
+          <option value="undergraduate" selected>طالب جامعي (بكالوريوس)</option>
+          <option value="masters">ماجستير</option>
+          <option value="phd">دكتوراه</option>
+        </select>
+      </div>
+      <div class="form-group"><label>الجنسية / الدولة</label><input id="pCountry" value="الجزائر"></div>
+    </div>
+    <div class="form-group"><label>اللغات التي تتقنها</label>
+      <input id="pLangs" value="العربية, الفرنسية, الإنجليزية">
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <h3><i class="ti ti-microscope"></i>الاهتمامات البحثية</h3>
+    <div class="form-group" style="margin-bottom:14px">
+      <label>مجالات البحث والاهتمام</label>
+      <input id="pResearch" value="الصحة الواحدة (One Health), مقاومة المضادات الميكروبية, الأوبئة الحيوانية, الأمن الغذائي, الصحة العامة البيطرية">
+    </div>
+    <div class="form-group">
+      <label>المهارات والخبرات</label>
+      <textarea id="pSkills">قيادة كشفية, العمل التطوعي الدولي, البحث العلمي الأكاديمي, الصحة العامة البيطرية, التواصل الأكاديمي, تنظيم الفعاليات</textarea>
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <h3><i class="ti ti-target"></i>تفضيلات الفرص</h3>
+    <div class="form-row">
+      <div class="form-group"><label>أنواع الفرص المفضلة</label>
+        <input id="pTypes" value="منح دراسية, مؤتمرات علمية, تدريب مهني, تطوع دولي, برامج شبابية, مسابقات بحثية">
+      </div>
+      <div class="form-group"><label>التمويل المطلوب</label>
+        <select id="pFunding">
+          <option value="fully_funded" selected>ممول بالكامل فقط</option>
+          <option value="partially">مقبول جزئياً</option>
+          <option value="any">أي نوع تمويل</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label>الدول أو المناطق المفضلة (اتركها فارغة لأي دولة)</label>
+      <input id="pCountries" placeholder="مثال: أوروبا, كندا, الولايات المتحدة, جنيف">
+    </div>
+    <div class="form-group">
+      <label>السيرة الذاتية المختصرة وأبرز إنجازاتك</label>
+      <textarea id="pCV" style="min-height:130px">طالب طب بيطري في السنة الثالثة بالجزائر. قائد كشفي نشط وعضو في منظمات تطوعية متعددة. اهتمام بالغ بالصحة الواحدة ومقاومة المضادات الميكروبية. مشارك في أنشطة بحثية على مستوى الجامعة. أبحث عن فرص دولية ممولة لتعزيز ملفي الأكاديمي والمهني وبناء شبكة علاقات دولية.</textarea>
+    </div>
+  </div>
+  <button class="btn-save" onclick="saveProfile()"><i class="ti ti-device-floppy"></i>حفظ الملف الشخصي</button>
+</div>
+
+<!-- SETTINGS TAB -->
+<div class="section" id="section-settings">
+  <div class="key-section">
+    <h3><i class="ti ti-key"></i>مفتاح Claude API</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.7">
+      النظام يستخدم Claude AI لتحليل الفرص وتقييمها. احصل على مفتاح مجاني من
+      <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent2)">console.anthropic.com</a>
+      — سجّل حساب ← API Keys ← Create Key
+    </p>
+    <div class="key-input-row">
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-...">
+      <button class="btn-save" onclick="saveKey()"><i class="ti ti-check"></i>حفظ</button>
+    </div>
+    <div id="keyStatus"></div>
+  </div>
+
+  <div class="key-section">
+    <h3><i class="ti ti-adjustments"></i>إعدادات البحث</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>عدد الفرص للتحليل في كل جلسة</label>
+        <select id="sCount">
+          <option value="20">20 فرصة (أسرع)</option>
+          <option value="30" selected>30 فرصة (موصى به)</option>
+          <option value="40">40 فرصة (أشمل)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>الحد الأدنى لدرجة التوافق لعرض الفرصة</label>
+        <select id="sMin">
+          <option value="50">50 درجة فأكثر</option>
+          <option value="60" selected>60 درجة فأكثر (موصى به)</option>
+          <option value="70">70 درجة فأكثر (الأفضل فقط)</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-save" onclick="saveSettings()"><i class="ti ti-device-floppy"></i>حفظ الإعدادات</button>
+  </div>
+
+  <div class="key-section">
+    <h3><i class="ti ti-info-circle"></i>عن النظام</h3>
+    <p style="font-size:13px;color:var(--muted);line-height:1.8">
+      <strong style="color:var(--text)">وكيلي الذكي</strong> — نظام شخصي لأسامة محمودي<br>
+      يبحث عن الفرص الأكاديمية والمهنية ويحللها بالذكاء الاصطناعي.<br>
+      جميع البيانات محفوظة محلياً في متصفحك فقط ولا تُرسل لأي جهة.
+    </p>
+    <button class="btn-sm" onclick="clearData()" style="margin-top:14px;border-color:#ef444440;color:var(--red)">
+      <i class="ti ti-refresh"></i>مسح نتائج البحث السابقة
+    </button>
+  </div>
+</div>
+
+</div><!-- end main -->
+</div><!-- end app -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SK={profile:'opp_profile',results:'opp_results',apikey:'opp_key',settings:'opp_settings',lastrun:'opp_lastrun'};
+function ld(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+function showTab(t){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+  document.getElementById('section-'+t).classList.add('active');
+}
+
+function loadProfile(){
+  const p=ld(SK.profile);if(!p)return;
+  ['pName','pMajor','pLevel','pCountry','pLangs','pResearch','pSkills','pTypes','pFunding','pCountries','pCV'].forEach(id=>{
+    const el=document.getElementById(id);if(el&&p[id]!==undefined)el.value=p[id];
+  });
+}
+
+function saveProfile(){
+  const p={};
+  ['pName','pMajor','pLevel','pCountry','pLangs','pResearch','pSkills','pTypes','pFunding','pCountries','pCV'].forEach(id=>{
+    const el=document.getElementById(id);if(el)p[id]=el.value;
+  });
+  sv(SK.profile,p);showToast('✅ تم حفظ ملفك الشخصي');
+}
+
+function getProfile(){
+  const p=ld(SK.profile);
+  return p||{pName:'أسامة محمودي',pMajor:'طب بيطري',pLevel:'undergraduate',pCountry:'الجزائر',pLangs:'العربية, الفرنسية, الإنجليزية',pResearch:'الصحة الواحدة, مقاومة المضادات الميكروبية',pSkills:'قيادة كشفية, تطوع, بحث علمي',pTypes:'منح, مؤتمرات, تدريب, تطوع',pFunding:'fully_funded',pCountries:'',pCV:'طالب طب بيطري. قائد كشفي. اهتمام بالصحة الواحدة.'};
+}
+
+function saveKey(){
+  const k=document.getElementById('apiKeyInput').value.trim();
+  if(!k.startsWith('sk-')){document.getElementById('keyStatus').innerHTML='<div class="key-status err">⚠ المفتاح غير صحيح — يجب أن يبدأ بـ sk-</div>';return;}
+  sv(SK.apikey,k);
+  document.getElementById('keyStatus').innerHTML='<div class="key-status ok">✅ تم حفظ المفتاح بأمان في متصفحك</div>';
+}
+
+function saveSettings(){sv(SK.settings,{count:document.getElementById('sCount').value,min:document.getElementById('sMin').value});showToast('✅ تم حفظ الإعدادات');}
+
+function clearData(){
+  if(!confirm('هل أنت متأكد من مسح جميع نتائج البحث؟'))return;
+  localStorage.removeItem(SK.results);localStorage.removeItem(SK.lastrun);
+  document.getElementById('oppsList').innerHTML='<div class="empty-state"><i class="ti ti-search"></i><p>لا توجد نتائج. ابدأ بحثاً جديداً.</p></div>';
+  document.getElementById('dashboardArea').style.display='none';
+  document.getElementById('lastRun').textContent='';
+  showToast('🗑 تم مسح البيانات');
+}
+
+function loadSettings(){
+  const s=ld(SK.settings);
+  if(s){document.getElementById('sCount').value=s.count||'30';document.getElementById('sMin').value=s.min||'60';}
+  const k=ld(SK.apikey);if(k)document.getElementById('apiKeyInput').value=k;
+  const lr=ld(SK.lastrun);if(lr)document.getElementById('lastRun').textContent='آخر بحث: '+lr;
+}
+
+function setStepUI(total,idx){
+  for(let i=0;i<total;i++){
+    const ic=document.getElementById('sic_'+i);
+    const lb=document.getElementById('slb_'+i);
+    if(!ic||!lb)continue;
+    if(i<idx){ic.innerHTML='<i class="ti ti-check"></i>';ic.className='step-icon done';lb.className='step-label done';}
+    else if(i===idx){ic.innerHTML='<div class="spinner"></div>';ic.className='step-icon active';lb.className='step-label active';}
+    else{ic.innerHTML=(i+1).toString();ic.className='step-icon wait';lb.className='step-label';}
+  }
+}
+function setProgress(p){
+  document.getElementById('progressFill').style.width=p+'%';
+  document.getElementById('statusPercent').textContent=Math.round(p)+'%';
+}
+
+async function callClaude(apiKey,prompt,sys){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:8000,system:sys,messages:[{role:'user',content:prompt}]})
+  });
+  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'خطأ في الاتصال بـ API');}
+  const d=await r.json();return d.content[0].text;
+}
+
+async function startSearch(){
+  const apiKey=ld(SK.apikey);
+  if(!apiKey){
+    alert('من فضلك أضف مفتاح Claude API أولاً في تبويب الإعدادات.\n\nاحصل على مفتاح مجاني من:\nhttps://console.anthropic.com');
+    showTab('settings');return;
+  }
+  const btn=document.getElementById('searchBtn');
+  btn.disabled=true;btn.innerHTML='<div class="spinner"></div>جاري البحث...';
+  const sb=document.getElementById('statusBar');sb.classList.add('show');
+  document.getElementById('dashboardArea').style.display='none';
+
+  const steps=['جمع الفرص من قواعد البيانات الأكاديمية','تحليل التوافق مع ملفك الشخصي','تقييم وترتيب الفرص حسب الأولوية','إعداد النتائج النهائية'];
+  document.getElementById('statusSteps').innerHTML=steps.map((s,i)=>`<div class="step"><div class="step-icon wait" id="sic_${i}">${i+1}</div><span class="step-label" id="slb_${i}">${s}</span></div>`).join('');
+
+  try{
+    const profile=getProfile();
+    const settings=ld(SK.settings)||{count:30,min:60};
+    const n=parseInt(settings.count||30);
+
+    document.getElementById('statusTitle').textContent='المرحلة 1: جمع الفرص...';
+    setStepUI(4,0);setProgress(15);
+
+    const sys=`أنت وكيل ذكي متخصص في البحث عن الفرص الأكاديمية والمهنية. تعيد JSON فقط بدون أي نص إضافي أو markdown.`;
+
+    const prompt=`أنشئ قائمة من ${n} فرصة أكاديمية ومهنية حقيقية وواقعية لعام 2025-2026 مناسبة لهذا الملف الشخصي:
+
+الاسم: ${profile.pName}
+التخصص: ${profile.pMajor}
+المستوى: ${profile.pLevel}
+الدولة: ${profile.pCountry}
+اللغات: ${profile.pLangs}
+الاهتمامات البحثية: ${profile.pResearch}
+المهارات: ${profile.pSkills}
+أنواع الفرص المفضلة: ${profile.pTypes}
+التمويل المطلوب: ${profile.pFunding === 'fully_funded' ? 'ممول بالكامل فقط' : profile.pFunding === 'partially' ? 'مقبول جزئياً' : 'أي نوع'}
+الدول المفضلة: ${profile.pCountries || 'أي دولة'}
+السيرة الذاتية: ${profile.pCV}
+
+أعد مصفوفة JSON فقط (بدون أي نص خارجها):
+[{"title":"اسم الفرصة","type":"نوع (منحة/مؤتمر/تدريب/تطوع/برنامج شبابي/مسابقة)","organizer":"الجهة المنظمة","country":"الدولة","deadline":"الموعد النهائي","funded":true,"remote":false,"score":85,"grade":"A+","reason":"سبب التوصية لأسامة تحديداً","benefits":"الفوائد المتوقعة","requirements":"المتطلبات الأساسية","link":"https://...","field":"المجال"}]
+
+قواعد التقييم: A+ (90-100) استثنائية، A (80-89) قوية جداً، B (70-79) جيدة، C (60-69) منخفضة.
+ركز على: One Health، مقاومة المضادات الميكروبية، طب بيطري، WHO، FAO، OIE، DAAD، Erasmus، برامج الأمم المتحدة، منظمات دولية موثوقة.
+الفرص يجب أن تكون حقيقية وموثوقة وروابطها صحيحة.`;
+
+    setStepUI(4,1);setProgress(40);
+    document.getElementById('statusTitle').textContent='المرحلة 2: تحليل التوافق...';
+
+    const raw=await callClaude(apiKey,prompt,sys);
+
+    setStepUI(4,2);setProgress(75);
+    document.getElementById('statusTitle').textContent='المرحلة 3: تقييم الفرص...';
+
+    let opps;
+    try{
+      const c=raw.replace(/```json|```/g,'').trim();
+      opps=JSON.parse(c);
+      if(!Array.isArray(opps))throw new Error('x');
+    }catch{
+      const m=raw.match(/\[[\s\S]*\]/);
+      if(m)opps=JSON.parse(m[0]);
+      else throw new Error('فشل في قراءة النتائج. حاول مرة أخرى.');
+    }
+
+    const minS=parseInt(settings.min||60);
+    opps=opps.filter(o=>o.score>=minS).sort((a,b)=>b.score-a.score);
+
+    setStepUI(4,3);setProgress(95);
+    document.getElementById('statusTitle').textContent='المرحلة 4: تجهيز النتائج...';
+
+    sv(SK.results,opps);
+    const now=new Date().toLocaleDateString('ar-DZ',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    sv(SK.lastrun,now);
+    document.getElementById('lastRun').textContent='آخر بحث: '+now;
+
+    setProgress(100);
+    document.getElementById('statusTitle').textContent='✅ اكتمل البحث بنجاح!';
+
+    await new Promise(r=>setTimeout(r,900));
+    sb.classList.remove('show');
+    renderDashboard(opps);
+    renderOpps(opps,'all');
+
+  }catch(err){
+    sb.classList.remove('show');
+    document.getElementById('dashboardArea').innerHTML=`<div class="alert err">❌ ${err.message}</div>`;
+    document.getElementById('dashboardArea').style.display='block';
+  }finally{
+    btn.disabled=false;btn.innerHTML='<i class="ti ti-sparkles"></i>البحث عن فرص جديدة';
+  }
+}
+
+function renderDashboard(opps){
+  const aplus=opps.filter(o=>o.grade==='A+').length;
+  const a=opps.filter(o=>o.grade==='A').length;
+  const funded=opps.filter(o=>o.funded).length;
+  document.getElementById('statsGrid').innerHTML=`
+    <div class="stat-card"><div class="stat-num purple">${opps.length}</div><div class="stat-label">فرصة مكتشفة</div></div>
+    <div class="stat-card"><div class="stat-num green">${aplus}</div><div class="stat-label">A+ استثنائية</div></div>
+    <div class="stat-card"><div class="stat-num teal">${a}</div><div class="stat-label">A قوية جداً</div></div>
+    <div class="stat-card"><div class="stat-num amber">${funded}</div><div class="stat-label">ممولة بالكامل</div></div>
+  `;
+  document.getElementById('dashboardArea').style.display='block';
+  const top=opps[0];
+  if(top)document.getElementById('topAlert').innerHTML=`⭐ أفضل فرصة: <strong>${top.title}</strong> — ${top.organizer} — درجة التوافق: <strong>${top.score}/100</strong>`;
+  showTab('results');
+}
+
+function gc(g){return g==='A+'?'aplus':g==='A'?'a':g==='B'?'b':'c';}
+function gcol(g){return g==='A+'?'var(--green)':g==='A'?'var(--teal)':g==='B'?'var(--amber)':'var(--muted)';}
+
+let _currentFilter='all';
+function renderOpps(opps,filter){
+  _currentFilter=filter;
+  const list=document.getElementById('oppsList');
+  let filtered;
+  if(!filter||filter==='all') filtered=opps;
+  else if(['A+','A','B','C'].includes(filter)) filtered=opps.filter(o=>o.grade===filter);
+  else filtered=opps.filter(o=>o.type&&o.type.includes(filter));
+
+  document.getElementById('resultsCount').textContent=`${filtered.length} فرصة مكتشفة`;
+  if(!filtered.length){list.innerHTML='<div class="empty-state"><i class="ti ti-mood-empty"></i><p>لا توجد فرص بهذا التصنيف.</p></div>';return;}
+  list.innerHTML=filtered.map((o,i)=>`
+    <div class="opp-card ${gc(o.grade)}" onclick="showOpp(${i})">
+      <div class="opp-top">
+        <div style="flex:1">
+          <div class="opp-title">${o.title}</div>
+          <div class="opp-meta">
+            <span class="badge type">${o.type||'فرصة'}</span>
+            ${o.funded?'<span class="badge funded">💰 ممول</span>':''}
+            ${o.remote?'<span class="badge remote">🌐 عن بعد</span>':''}
+            <span class="badge deadline">⏰ ${o.deadline||'—'}</span>
+          </div>
+        </div>
+        <div class="score-circle ${gc(o.grade)}">
+          <div class="score-num" style="color:${gcol(o.grade)}">${o.score}</div>
+          <div class="score-grade">${o.grade}</div>
+        </div>
+      </div>
+      <div class="opp-reason">${o.reason||''}</div>
+      <div class="opp-footer">
+        <a class="btn-sm" href="${o.link||'#'}" target="_blank" onclick="event.stopPropagation()">
+          <i class="ti ti-external-link"></i>فتح الرابط
+        </a>
+        <span style="font-size:12px;color:var(--muted);margin-right:auto">${o.organizer||''} ${o.country?'• '+o.country:''}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterOpps(f,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const opps=ld(SK.results)||[];
+  renderOpps(opps,f);
+}
+
+function showOpp(idx){
+  const opps=ld(SK.results)||[];
+  let filtered;
+  if(!_currentFilter||_currentFilter==='all') filtered=opps;
+  else if(['A+','A','B','C'].includes(_currentFilter)) filtered=opps.filter(o=>o.grade===_currentFilter);
+  else filtered=opps.filter(o=>o.type&&o.type.includes(_currentFilter));
+  const o=filtered[idx];if(!o)return;
+  document.getElementById('modalContent').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:18px">
+      <h2>${o.title}</h2>
+      <div class="score-circle ${gc(o.grade)}" style="min-width:54px;flex-shrink:0">
+        <div class="score-num" style="color:${gcol(o.grade)}">${o.score}</div>
+        <div class="score-grade">${o.grade}</div>
+      </div>
+    </div>
+    <div class="modal-grid">
+      <div class="info-item"><div class="info-label">النوع</div><div class="info-val">${o.type||'—'}</div></div>
+      <div class="info-item"><div class="info-label">الجهة المنظمة</div><div class="info-val">${o.organizer||'—'}</div></div>
+      <div class="info-item"><div class="info-label">الدولة</div><div class="info-val">${o.country||'—'}</div></div>
+      <div class="info-item"><div class="info-label">الموعد النهائي</div><div class="info-val">${o.deadline||'—'}</div></div>
+      <div class="info-item"><div class="info-label">التمويل</div><div class="info-val">${o.funded?'✅ ممول بالكامل':'❌ غير ممول'}</div></div>
+      <div class="info-item"><div class="info-label">المشاركة عن بعد</div><div class="info-val">${o.remote?'✅ متاح':'❌ حضوري'}</div></div>
+    </div>
+    <div class="info-item" style="margin-top:10px"><div class="info-label">🎯 سبب الترشيح</div><div class="info-val" style="line-height:1.7">${o.reason||'—'}</div></div>
+    <div class="info-item" style="margin-top:8px"><div class="info-label">🏆 الفوائد المتوقعة</div><div class="info-val" style="line-height:1.7">${o.benefits||'—'}</div></div>
+    <div class="info-item" style="margin-top:8px"><div class="info-label">📋 المتطلبات الأساسية</div><div class="info-val" style="line-height:1.7">${o.requirements||'—'}</div></div>
+    <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
+      <a class="btn-link" href="${o.link||'#'}" target="_blank"><i class="ti ti-external-link"></i>فتح الموقع الرسمي</a>
+      <button class="btn-close" onclick="document.getElementById('modalOverlay').classList.remove('show')">إغلاق</button>
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModalOutside(e){if(e.target===document.getElementById('modalOverlay'))document.getElementById('modalOverlay').classList.remove('show');}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+(function init(){
+  loadProfile();loadSettings();
+  const saved=ld(SK.results);
+  if(saved&&saved.length>0){
+    renderDashboard(saved);renderOpps(saved,'all');
+    showTab('search');
+    document.getElementById('dashboardArea').style.display='block';
+  }
+})();
+</script>
+</body>
+</html>
