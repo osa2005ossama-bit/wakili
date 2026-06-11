@@ -255,7 +255,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       4. انسخ المفتاح والصقه هنا
     </p>
     <div class="key-input-row">
-      <input type="password" id="apiKeyInput" placeholder="AIza...">
+      <input type="password" id="apiKeyInput" placeholder="AIza... أو AQ...">
       <button class="btn-save" onclick="saveKey()"><i class="ti ti-check"></i>حفظ</button>
     </div>
     <div id="keyStatus"></div>
@@ -334,7 +334,7 @@ function getProfile(){
 }
 function saveKey(){
   const k=document.getElementById('apiKeyInput').value.trim();
-  if(!k.startsWith('AIza')){document.getElementById('keyStatus').innerHTML='<div class="key-status err">⚠ المفتاح غير صحيح — يجب أن يبدأ بـ AIza</div>';return;}
+  if(!k.startsWith('AIza') && !k.startsWith('AQ.')){document.getElementById('keyStatus').innerHTML='<div class="key-status err">⚠ المفتاح غير صحيح</div>';return;}
   sv(SK.apikey,k);
   document.getElementById('keyStatus').innerHTML='<div class="key-status ok">✅ تم حفظ مفتاح Gemini بنجاح</div>';
 }
