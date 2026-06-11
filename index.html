@@ -16,7 +16,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .tab{padding:0 16px;height:56px;display:flex;align-items:center;font-size:13px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;gap:6px}
 .tab:hover{color:var(--text)}
 .tab.active{color:var(--accent2);border-bottom-color:var(--accent2)}
-.tab i{font-size:15px}
 .main{flex:1;padding:24px;max-width:900px;width:100%;margin:0 auto}
 .section{display:none}
 .section.active{display:block}
@@ -40,7 +39,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .step-label.done{color:var(--green)}
 .step-label{color:var(--muted)}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-@media(max-width:600px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.stats-grid{grid-template-columns:repeat(2,1fr)}.nav-tabs .tab span{display:none}}
 .stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center}
 .stat-num{font-size:26px;font-weight:600;margin-bottom:6px}
 .stat-label{font-size:12px;color:var(--muted)}
@@ -94,7 +93,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .form-group input,.form-group textarea,.form-group select{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:9px 13px;border-radius:8px;font-size:13px;outline:none;width:100%;font-family:inherit;direction:rtl;transition:border-color .2s}
 .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--accent)}
 .form-group textarea{resize:vertical;min-height:90px;line-height:1.6}
-.form-group select option{background:var(--bg2)}
 .btn-save{background:var(--accent);color:#fff;border:none;padding:11px 26px;border-radius:9px;font-size:13px;cursor:pointer;transition:opacity .2s;display:inline-flex;align-items:center;gap:8px;margin-top:4px}
 .btn-save:hover{opacity:.88}
 .key-section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px}
@@ -108,10 +106,9 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:#000000bb;display:none;align-items:flex-start;justify-content:center;z-index:200;padding:24px;overflow-y:auto}
 .modal-overlay.show{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:26px;max-width:600px;width:100%;margin:auto;direction:rtl}
-.modal h2{font-size:16px;font-weight:500;margin-bottom:18px;line-height:1.4}
 .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:500px){.modal-grid{grid-template-columns:1fr}}
-.info-item{background:var(--bg3);padding:12px 14px;border-radius:9px}
+.info-item{background:var(--bg3);padding:12px 14px;border-radius:9px;margin-bottom:0}
 .info-label{font-size:11px;color:var(--muted);margin-bottom:5px}
 .info-val{font-size:13px;font-weight:500;line-height:1.5}
 .btn-close{background:none;border:1px solid var(--border);color:var(--muted);padding:9px 22px;border-radius:9px;cursor:pointer;font-size:13px;font-family:inherit}
@@ -120,37 +117,36 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .btn-link:hover{opacity:.88}
 .spinner{width:17px;height:17px;border:2px solid #ffffff40;border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
+.gemini-badge{background:#4285f415;border:1px solid #4285f440;color:#4285f4;padding:4px 12px;border-radius:20px;font-size:11px;display:inline-flex;align-items:center;gap:5px;margin-bottom:12px}
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;padding:11px 22px;border-radius:9px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 </style>
 </head>
 <body>
-<div class="div class="toast" id="toast"></div>
 <div class="app">
 <nav class="nav">
   <div class="nav-brand"><i class="ti ti-rocket"></i>وكيلي الذكي</div>
   <div class="nav-tabs">
-    <div class="tab active" onclick="showTab('search')" id="tab-search"><i class="ti ti-search"></i>البحث</div>
-    <div class="tab" onclick="showTab('results')" id="tab-results"><i class="ti ti-list"></i>الفرص</div>
-    <div class="tab" onclick="showTab('profile')" id="tab-profile"><i class="ti ti-user"></i>ملفي</div>
-    <div class="tab" onclick="showTab('settings')" id="tab-settings"><i class="ti ti-settings"></i>الإعدادات</div>
+    <div class="tab active" onclick="showTab('search')" id="tab-search"><i class="ti ti-search"></i><span>البحث</span></div>
+    <div class="tab" onclick="showTab('results')" id="tab-results"><i class="ti ti-list"></i><span>الفرص</span></div>
+    <div class="tab" onclick="showTab('profile')" id="tab-profile"><i class="ti ti-user"></i><span>ملفي</span></div>
+    <div class="tab" onclick="showTab('settings')" id="tab-settings"><i class="ti ti-settings"></i><span>الإعدادات</span></div>
   </div>
 </nav>
 
 <div class="main">
 
-<!-- SEARCH TAB -->
+<!-- SEARCH -->
 <div class="section active" id="section-search">
   <div class="search-hero">
+    <div class="gemini-badge"><i class="ti ti-brand-google"></i>مدعوم بـ Google Gemini — مجاني 100%</div>
     <h1>مرحباً يا أسامة 👋</h1>
     <p>وكيلك الذكي جاهز للبحث عن أفضل الفرص الأكاديمية والمهنية<br>المناسبة تماماً لملفك الشخصي</p>
     <button class="btn-search" id="searchBtn" onclick="startSearch()">
-      <i class="ti ti-sparkles"></i>
-      البحث عن فرص جديدة
+      <i class="ti ti-sparkles"></i>البحث عن فرص جديدة
     </button>
     <div style="margin-top:14px;font-size:12px;color:var(--muted)" id="lastRun"></div>
   </div>
-
   <div class="status-bar" id="statusBar">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <span style="font-size:13px;font-weight:500" id="statusTitle">جاري البحث...</span>
@@ -159,14 +155,13 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     <div class="status-steps" id="statusSteps"></div>
   </div>
-
   <div id="dashboardArea" style="display:none">
     <div class="stats-grid" id="statsGrid"></div>
     <div class="alert info" id="topAlert"></div>
   </div>
 </div>
 
-<!-- RESULTS TAB -->
+<!-- RESULTS -->
 <div class="section" id="section-results">
   <div class="results-header">
     <h2 id="resultsCount">الفرص المكتشفة</h2>
@@ -188,7 +183,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 </div>
 
-<!-- PROFILE TAB -->
+<!-- PROFILE -->
 <div class="section" id="section-profile">
   <div class="profile-section">
     <h3><i class="ti ti-id-badge"></i>المعلومات الأساسية</h3>
@@ -206,94 +201,93 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       </div>
       <div class="form-group"><label>الجنسية / الدولة</label><input id="pCountry" value="الجزائر"></div>
     </div>
-    <div class="form-group"><label>اللغات التي تتقنها</label>
-      <input id="pLangs" value="العربية, الفرنسية, الإنجليزية">
-    </div>
+    <div class="form-group"><label>اللغات</label><input id="pLangs" value="العربية, الفرنسية, الإنجليزية"></div>
   </div>
-
   <div class="profile-section">
     <h3><i class="ti ti-microscope"></i>الاهتمامات البحثية</h3>
     <div class="form-group" style="margin-bottom:14px">
-      <label>مجالات البحث والاهتمام</label>
-      <input id="pResearch" value="الصحة الواحدة (One Health), مقاومة المضادات الميكروبية, الأوبئة الحيوانية, الأمن الغذائي, الصحة العامة البيطرية">
+      <label>مجالات البحث</label>
+      <input id="pResearch" value="الصحة الواحدة (One Health), مقاومة المضادات الميكروبية, الأوبئة الحيوانية, الأمن الغذائي">
     </div>
     <div class="form-group">
       <label>المهارات والخبرات</label>
-      <textarea id="pSkills">قيادة كشفية, العمل التطوعي الدولي, البحث العلمي الأكاديمي, الصحة العامة البيطرية, التواصل الأكاديمي, تنظيم الفعاليات</textarea>
+      <textarea id="pSkills">قيادة كشفية, العمل التطوعي الدولي, البحث العلمي, الصحة العامة البيطرية, التواصل الأكاديمي</textarea>
     </div>
   </div>
-
   <div class="profile-section">
     <h3><i class="ti ti-target"></i>تفضيلات الفرص</h3>
     <div class="form-row">
       <div class="form-group"><label>أنواع الفرص المفضلة</label>
-        <input id="pTypes" value="منح دراسية, مؤتمرات علمية, تدريب مهني, تطوع دولي, برامج شبابية, مسابقات بحثية">
+        <input id="pTypes" value="منح دراسية, مؤتمرات علمية, تدريب, تطوع دولي, برامج شبابية">
       </div>
-      <div class="form-group"><label>التمويل المطلوب</label>
+      <div class="form-group"><label>التمويل</label>
         <select id="pFunding">
           <option value="fully_funded" selected>ممول بالكامل فقط</option>
           <option value="partially">مقبول جزئياً</option>
-          <option value="any">أي نوع تمويل</option>
+          <option value="any">أي نوع</option>
         </select>
       </div>
     </div>
     <div class="form-group" style="margin-bottom:14px">
-      <label>الدول أو المناطق المفضلة (اتركها فارغة لأي دولة)</label>
-      <input id="pCountries" placeholder="مثال: أوروبا, كندا, الولايات المتحدة, جنيف">
+      <label>الدول المفضلة (اتركها فارغة لأي دولة)</label>
+      <input id="pCountries" placeholder="مثال: أوروبا, كندا, جنيف">
     </div>
     <div class="form-group">
-      <label>السيرة الذاتية المختصرة وأبرز إنجازاتك</label>
-      <textarea id="pCV" style="min-height:130px">طالب طب بيطري في السنة الثالثة بالجزائر. قائد كشفي نشط وعضو في منظمات تطوعية متعددة. اهتمام بالغ بالصحة الواحدة ومقاومة المضادات الميكروبية. مشارك في أنشطة بحثية على مستوى الجامعة. أبحث عن فرص دولية ممولة لتعزيز ملفي الأكاديمي والمهني وبناء شبكة علاقات دولية.</textarea>
+      <label>السيرة الذاتية المختصرة</label>
+      <textarea id="pCV" style="min-height:120px">طالب طب بيطري في السنة الثالثة بالجزائر. قائد كشفي وناشط تطوعي. اهتمام بالغ بالصحة الواحدة ومقاومة المضادات الميكروبية. أبحث عن فرص دولية ممولة لتعزيز ملفي الأكاديمي.</textarea>
     </div>
   </div>
   <button class="btn-save" onclick="saveProfile()"><i class="ti ti-device-floppy"></i>حفظ الملف الشخصي</button>
 </div>
 
-<!-- SETTINGS TAB -->
+<!-- SETTINGS -->
 <div class="section" id="section-settings">
   <div class="key-section">
-    <h3><i class="ti ti-key"></i>مفتاح Claude API</h3>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.7">
-      النظام يستخدم Claude AI لتحليل الفرص وتقييمها. احصل على مفتاح مجاني من
-      <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent2)">console.anthropic.com</a>
-      — سجّل حساب ← API Keys ← Create Key
+    <h3><i class="ti ti-brand-google"></i>مفتاح Google Gemini API — مجاني 100%</h3>
+    <div class="alert ok" style="margin-bottom:16px">
+      ✅ Google Gemini مجاني تماماً — لا يحتاج بطاقة بنكية — 1500 طلب مجاني شهرياً
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.8">
+      <strong style="color:var(--text)">خطوات الحصول على المفتاح:</strong><br>
+      1. افتح: <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--accent2)">aistudio.google.com/apikey</a><br>
+      2. سجّل دخول بحساب Google<br>
+      3. اضغط <strong style="color:var(--text)">Create API Key</strong><br>
+      4. انسخ المفتاح والصقه هنا
     </p>
     <div class="key-input-row">
-      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-...">
+      <input type="password" id="apiKeyInput" placeholder="AIza...">
       <button class="btn-save" onclick="saveKey()"><i class="ti ti-check"></i>حفظ</button>
     </div>
     <div id="keyStatus"></div>
   </div>
-
   <div class="key-section">
     <h3><i class="ti ti-adjustments"></i>إعدادات البحث</h3>
     <div class="form-row">
       <div class="form-group">
-        <label>عدد الفرص للتحليل في كل جلسة</label>
+        <label>عدد الفرص للتحليل</label>
         <select id="sCount">
-          <option value="20">20 فرصة (أسرع)</option>
+          <option value="20">20 فرصة</option>
           <option value="30" selected>30 فرصة (موصى به)</option>
-          <option value="40">40 فرصة (أشمل)</option>
+          <option value="40">40 فرصة</option>
         </select>
       </div>
       <div class="form-group">
-        <label>الحد الأدنى لدرجة التوافق لعرض الفرصة</label>
+        <label>الحد الأدنى لدرجة القبول</label>
         <select id="sMin">
-          <option value="50">50 درجة فأكثر</option>
-          <option value="60" selected>60 درجة فأكثر (موصى به)</option>
-          <option value="70">70 درجة فأكثر (الأفضل فقط)</option>
+          <option value="50">50+</option>
+          <option value="60" selected>60+ (موصى به)</option>
+          <option value="70">70+ (الأفضل فقط)</option>
         </select>
       </div>
     </div>
-    <button class="btn-save" onclick="saveSettings()"><i class="ti ti-device-floppy"></i>حفظ الإعدادات</button>
+    <button class="btn-save" onclick="saveSettings()"><i class="ti ti-device-floppy"></i>حفظ</button>
   </div>
-
   <div class="key-section">
     <h3><i class="ti ti-info-circle"></i>عن النظام</h3>
     <p style="font-size:13px;color:var(--muted);line-height:1.8">
       <strong style="color:var(--text)">وكيلي الذكي</strong> — نظام شخصي لأسامة محمودي<br>
-      يبحث عن الفرص الأكاديمية والمهنية ويحللها بالذكاء الاصطناعي.<br>
-      جميع البيانات محفوظة محلياً في متصفحك فقط ولا تُرسل لأي جهة.
+      مدعوم بـ Google Gemini AI مجاناً.<br>
+      جميع البيانات محفوظة في متصفحك فقط.
     </p>
     <button class="btn-sm" onclick="clearData()" style="margin-top:14px;border-color:#ef444440;color:var(--red)">
       <i class="ti ti-refresh"></i>مسح نتائج البحث السابقة
@@ -301,18 +295,17 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 </div>
 
-</div><!-- end main -->
-</div><!-- end app -->
+</div>
+</div>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
   <div class="modal" id="modalContent"></div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-const SK={profile:'opp_profile',results:'opp_results',apikey:'opp_key',settings:'opp_settings',lastrun:'opp_lastrun'};
+const SK={profile:'opp_profile',results:'opp_results',apikey:'opp_gemini_key',settings:'opp_settings',lastrun:'opp_lastrun'};
 function ld(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
 function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
 
@@ -329,7 +322,6 @@ function loadProfile(){
     const el=document.getElementById(id);if(el&&p[id]!==undefined)el.value=p[id];
   });
 }
-
 function saveProfile(){
   const p={};
   ['pName','pMajor','pLevel','pCountry','pLangs','pResearch','pSkills','pTypes','pFunding','pCountries','pCV'].forEach(id=>{
@@ -337,30 +329,24 @@ function saveProfile(){
   });
   sv(SK.profile,p);showToast('✅ تم حفظ ملفك الشخصي');
 }
-
 function getProfile(){
-  const p=ld(SK.profile);
-  return p||{pName:'أسامة محمودي',pMajor:'طب بيطري',pLevel:'undergraduate',pCountry:'الجزائر',pLangs:'العربية, الفرنسية, الإنجليزية',pResearch:'الصحة الواحدة, مقاومة المضادات الميكروبية',pSkills:'قيادة كشفية, تطوع, بحث علمي',pTypes:'منح, مؤتمرات, تدريب, تطوع',pFunding:'fully_funded',pCountries:'',pCV:'طالب طب بيطري. قائد كشفي. اهتمام بالصحة الواحدة.'};
+  return ld(SK.profile)||{pName:'أسامة محمودي',pMajor:'طب بيطري',pLevel:'undergraduate',pCountry:'الجزائر',pLangs:'العربية, الفرنسية, الإنجليزية',pResearch:'الصحة الواحدة, مقاومة المضادات الميكروبية',pSkills:'قيادة كشفية, تطوع, بحث علمي',pTypes:'منح, مؤتمرات, تدريب, تطوع',pFunding:'fully_funded',pCountries:'',pCV:'طالب طب بيطري. قائد كشفي. اهتمام بالصحة الواحدة.'};
 }
-
 function saveKey(){
   const k=document.getElementById('apiKeyInput').value.trim();
-  if(!k.startsWith('sk-')){document.getElementById('keyStatus').innerHTML='<div class="key-status err">⚠ المفتاح غير صحيح — يجب أن يبدأ بـ sk-</div>';return;}
+  if(!k.startsWith('AIza')){document.getElementById('keyStatus').innerHTML='<div class="key-status err">⚠ المفتاح غير صحيح — يجب أن يبدأ بـ AIza</div>';return;}
   sv(SK.apikey,k);
-  document.getElementById('keyStatus').innerHTML='<div class="key-status ok">✅ تم حفظ المفتاح بأمان في متصفحك</div>';
+  document.getElementById('keyStatus').innerHTML='<div class="key-status ok">✅ تم حفظ مفتاح Gemini بنجاح</div>';
 }
-
 function saveSettings(){sv(SK.settings,{count:document.getElementById('sCount').value,min:document.getElementById('sMin').value});showToast('✅ تم حفظ الإعدادات');}
-
 function clearData(){
-  if(!confirm('هل أنت متأكد من مسح جميع نتائج البحث؟'))return;
+  if(!confirm('هل أنت متأكد؟'))return;
   localStorage.removeItem(SK.results);localStorage.removeItem(SK.lastrun);
-  document.getElementById('oppsList').innerHTML='<div class="empty-state"><i class="ti ti-search"></i><p>لا توجد نتائج. ابدأ بحثاً جديداً.</p></div>';
+  document.getElementById('oppsList').innerHTML='<div class="empty-state"><i class="ti ti-search"></i><p>لا توجد نتائج.</p></div>';
   document.getElementById('dashboardArea').style.display='none';
   document.getElementById('lastRun').textContent='';
   showToast('🗑 تم مسح البيانات');
 }
-
 function loadSettings(){
   const s=ld(SK.settings);
   if(s){document.getElementById('sCount').value=s.count||'30';document.getElementById('sMin').value=s.min||'60';}
@@ -375,7 +361,7 @@ function setStepUI(total,idx){
     if(!ic||!lb)continue;
     if(i<idx){ic.innerHTML='<i class="ti ti-check"></i>';ic.className='step-icon done';lb.className='step-label done';}
     else if(i===idx){ic.innerHTML='<div class="spinner"></div>';ic.className='step-icon active';lb.className='step-label active';}
-    else{ic.innerHTML=(i+1).toString();ic.className='step-icon wait';lb.className='step-label';}
+    else{ic.innerHTML=(i+1);ic.className='step-icon wait';lb.className='step-label';}
   }
 }
 function setProgress(p){
@@ -383,20 +369,25 @@ function setProgress(p){
   document.getElementById('statusPercent').textContent=Math.round(p)+'%';
 }
 
-async function callClaude(apiKey,prompt,sys){
-  const r=await fetch('https://api.anthropic.com/v1/messages',{
+async function callGemini(apiKey, prompt){
+  const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  const res=await fetch(url,{
     method:'POST',
-    headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:8000,system:sys,messages:[{role:'user',content:prompt}]})
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      contents:[{parts:[{text:prompt}]}],
+      generationConfig:{temperature:0.7,maxOutputTokens:8000}
+    })
   });
-  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'خطأ في الاتصال بـ API');}
-  const d=await r.json();return d.content[0].text;
+  if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'خطأ في الاتصال بـ Gemini');}
+  const d=await res.json();
+  return d.candidates[0].content.parts[0].text;
 }
 
 async function startSearch(){
   const apiKey=ld(SK.apikey);
   if(!apiKey){
-    alert('من فضلك أضف مفتاح Claude API أولاً في تبويب الإعدادات.\n\nاحصل على مفتاح مجاني من:\nhttps://console.anthropic.com');
+    alert('من فضلك أضف مفتاح Google Gemini API أولاً في تبويب الإعدادات.\n\nاحصل عليه مجاناً من:\nhttps://aistudio.google.com/apikey');
     showTab('settings');return;
   }
   const btn=document.getElementById('searchBtn');
@@ -404,7 +395,7 @@ async function startSearch(){
   const sb=document.getElementById('statusBar');sb.classList.add('show');
   document.getElementById('dashboardArea').style.display='none';
 
-  const steps=['جمع الفرص من قواعد البيانات الأكاديمية','تحليل التوافق مع ملفك الشخصي','تقييم وترتيب الفرص حسب الأولوية','إعداد النتائج النهائية'];
+  const steps=['جمع الفرص من قواعد البيانات الأكاديمية','تحليل التوافق مع ملفك الشخصي','تقييم وترتيب الفرص','إعداد النتائج النهائية'];
   document.getElementById('statusSteps').innerHTML=steps.map((s,i)=>`<div class="step"><div class="step-icon wait" id="sic_${i}">${i+1}</div><span class="step-label" id="slb_${i}">${s}</span></div>`).join('');
 
   try{
@@ -415,33 +406,31 @@ async function startSearch(){
     document.getElementById('statusTitle').textContent='المرحلة 1: جمع الفرص...';
     setStepUI(4,0);setProgress(15);
 
-    const sys=`أنت وكيل ذكي متخصص في البحث عن الفرص الأكاديمية والمهنية. تعيد JSON فقط بدون أي نص إضافي أو markdown.`;
+    const prompt=`أنت وكيل ذكي متخصص في البحث عن الفرص الأكاديمية والمهنية.
 
-    const prompt=`أنشئ قائمة من ${n} فرصة أكاديمية ومهنية حقيقية وواقعية لعام 2025-2026 مناسبة لهذا الملف الشخصي:
+أنشئ قائمة من ${n} فرصة أكاديمية ومهنية حقيقية لعام 2025-2026 لهذا الملف:
+- الاسم: ${profile.pName}
+- التخصص: ${profile.pMajor}
+- المستوى: ${profile.pLevel === 'undergraduate' ? 'طالب جامعي' : profile.pLevel}
+- الدولة: ${profile.pCountry}
+- اللغات: ${profile.pLangs}
+- الاهتمامات: ${profile.pResearch}
+- المهارات: ${profile.pSkills}
+- أنواع الفرص: ${profile.pTypes}
+- التمويل: ${profile.pFunding === 'fully_funded' ? 'ممول بالكامل فقط' : 'أي نوع'}
+- السيرة: ${profile.pCV}
 
-الاسم: ${profile.pName}
-التخصص: ${profile.pMajor}
-المستوى: ${profile.pLevel}
-الدولة: ${profile.pCountry}
-اللغات: ${profile.pLangs}
-الاهتمامات البحثية: ${profile.pResearch}
-المهارات: ${profile.pSkills}
-أنواع الفرص المفضلة: ${profile.pTypes}
-التمويل المطلوب: ${profile.pFunding === 'fully_funded' ? 'ممول بالكامل فقط' : profile.pFunding === 'partially' ? 'مقبول جزئياً' : 'أي نوع'}
-الدول المفضلة: ${profile.pCountries || 'أي دولة'}
-السيرة الذاتية: ${profile.pCV}
+أعد مصفوفة JSON فقط بدون أي نص خارجها أو markdown:
+[{"title":"اسم الفرصة","type":"نوع (منحة/مؤتمر/تدريب/تطوع/برنامج شبابي/مسابقة)","organizer":"الجهة المنظمة","country":"الدولة","deadline":"الموعد النهائي المتوقع","funded":true,"remote":false,"score":85,"grade":"A+","reason":"سبب التوصية لأسامة تحديداً بجملتين","benefits":"الفوائد المتوقعة","requirements":"المتطلبات الأساسية","link":"https://الرابط الرسمي","field":"المجال"}]
 
-أعد مصفوفة JSON فقط (بدون أي نص خارجها):
-[{"title":"اسم الفرصة","type":"نوع (منحة/مؤتمر/تدريب/تطوع/برنامج شبابي/مسابقة)","organizer":"الجهة المنظمة","country":"الدولة","deadline":"الموعد النهائي","funded":true,"remote":false,"score":85,"grade":"A+","reason":"سبب التوصية لأسامة تحديداً","benefits":"الفوائد المتوقعة","requirements":"المتطلبات الأساسية","link":"https://...","field":"المجال"}]
-
-قواعد التقييم: A+ (90-100) استثنائية، A (80-89) قوية جداً، B (70-79) جيدة، C (60-69) منخفضة.
-ركز على: One Health، مقاومة المضادات الميكروبية، طب بيطري، WHO، FAO، OIE، DAAD، Erasmus، برامج الأمم المتحدة، منظمات دولية موثوقة.
-الفرص يجب أن تكون حقيقية وموثوقة وروابطها صحيحة.`;
+قواعد التقييم: A+ (90-100), A (80-89), B (70-79), C (60-69)
+ركز على: WHO, FAO, OIE, DAAD, Erasmus, برامج الأمم المتحدة, One Health, مقاومة المضادات الميكروبية, طب بيطري, تطوع دولي ممول.
+أعد JSON فقط بدون أي نص إضافي.`;
 
     setStepUI(4,1);setProgress(40);
     document.getElementById('statusTitle').textContent='المرحلة 2: تحليل التوافق...';
 
-    const raw=await callClaude(apiKey,prompt,sys);
+    const raw=await callGemini(apiKey,prompt);
 
     setStepUI(4,2);setProgress(75);
     document.getElementById('statusTitle').textContent='المرحلة 3: تقييم الفرص...';
@@ -470,15 +459,14 @@ async function startSearch(){
 
     setProgress(100);
     document.getElementById('statusTitle').textContent='✅ اكتمل البحث بنجاح!';
-
-    await new Promise(r=>setTimeout(r,900));
+    await new Promise(r=>setTimeout(r,800));
     sb.classList.remove('show');
     renderDashboard(opps);
     renderOpps(opps,'all');
 
   }catch(err){
     sb.classList.remove('show');
-    document.getElementById('dashboardArea').innerHTML=`<div class="alert err">❌ ${err.message}</div>`;
+    document.getElementById('dashboardArea').innerHTML=`<div class="alert err">❌ ${err.message}<br><small>تأكد من صحة مفتاح Gemini API</small></div>`;
     document.getElementById('dashboardArea').style.display='block';
   }finally{
     btn.disabled=false;btn.innerHTML='<i class="ti ti-sparkles"></i>البحث عن فرص جديدة';
@@ -497,22 +485,21 @@ function renderDashboard(opps){
   `;
   document.getElementById('dashboardArea').style.display='block';
   const top=opps[0];
-  if(top)document.getElementById('topAlert').innerHTML=`⭐ أفضل فرصة: <strong>${top.title}</strong> — ${top.organizer} — درجة التوافق: <strong>${top.score}/100</strong>`;
+  if(top)document.getElementById('topAlert').innerHTML=`⭐ أفضل فرصة: <strong>${top.title}</strong> — ${top.organizer} — توافق: <strong>${top.score}/100</strong>`;
   showTab('results');
 }
 
 function gc(g){return g==='A+'?'aplus':g==='A'?'a':g==='B'?'b':'c';}
 function gcol(g){return g==='A+'?'var(--green)':g==='A'?'var(--teal)':g==='B'?'var(--amber)':'var(--muted)';}
 
-let _currentFilter='all';
+let _cf='all';
 function renderOpps(opps,filter){
-  _currentFilter=filter;
+  _cf=filter;
   const list=document.getElementById('oppsList');
   let filtered;
-  if(!filter||filter==='all') filtered=opps;
-  else if(['A+','A','B','C'].includes(filter)) filtered=opps.filter(o=>o.grade===filter);
+  if(!filter||filter==='all')filtered=opps;
+  else if(['A+','A','B','C'].includes(filter))filtered=opps.filter(o=>o.grade===filter);
   else filtered=opps.filter(o=>o.type&&o.type.includes(filter));
-
   document.getElementById('resultsCount').textContent=`${filtered.length} فرصة مكتشفة`;
   if(!filtered.length){list.innerHTML='<div class="empty-state"><i class="ti ti-mood-empty"></i><p>لا توجد فرص بهذا التصنيف.</p></div>';return;}
   list.innerHTML=filtered.map((o,i)=>`
@@ -546,20 +533,19 @@ function renderOpps(opps,filter){
 function filterOpps(f,btn){
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  const opps=ld(SK.results)||[];
-  renderOpps(opps,f);
+  renderOpps(ld(SK.results)||[],f);
 }
 
 function showOpp(idx){
   const opps=ld(SK.results)||[];
   let filtered;
-  if(!_currentFilter||_currentFilter==='all') filtered=opps;
-  else if(['A+','A','B','C'].includes(_currentFilter)) filtered=opps.filter(o=>o.grade===_currentFilter);
-  else filtered=opps.filter(o=>o.type&&o.type.includes(_currentFilter));
+  if(!_cf||_cf==='all')filtered=opps;
+  else if(['A+','A','B','C'].includes(_cf))filtered=opps.filter(o=>o.grade===_cf);
+  else filtered=opps.filter(o=>o.type&&o.type.includes(_cf));
   const o=filtered[idx];if(!o)return;
   document.getElementById('modalContent').innerHTML=`
     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:18px">
-      <h2>${o.title}</h2>
+      <h2 style="font-size:15px;line-height:1.4">${o.title}</h2>
       <div class="score-circle ${gc(o.grade)}" style="min-width:54px;flex-shrink:0">
         <div class="score-num" style="color:${gcol(o.grade)}">${o.score}</div>
         <div class="score-grade">${o.grade}</div>
@@ -570,12 +556,12 @@ function showOpp(idx){
       <div class="info-item"><div class="info-label">الجهة المنظمة</div><div class="info-val">${o.organizer||'—'}</div></div>
       <div class="info-item"><div class="info-label">الدولة</div><div class="info-val">${o.country||'—'}</div></div>
       <div class="info-item"><div class="info-label">الموعد النهائي</div><div class="info-val">${o.deadline||'—'}</div></div>
-      <div class="info-item"><div class="info-label">التمويل</div><div class="info-val">${o.funded?'✅ ممول بالكامل':'❌ غير ممول'}</div></div>
-      <div class="info-item"><div class="info-label">المشاركة عن بعد</div><div class="info-val">${o.remote?'✅ متاح':'❌ حضوري'}</div></div>
+      <div class="info-item"><div class="info-label">التمويل</div><div class="info-val">${o.funded?'✅ ممول':'❌ غير ممول'}</div></div>
+      <div class="info-item"><div class="info-label">عن بعد</div><div class="info-val">${o.remote?'✅ نعم':'❌ حضوري'}</div></div>
     </div>
     <div class="info-item" style="margin-top:10px"><div class="info-label">🎯 سبب الترشيح</div><div class="info-val" style="line-height:1.7">${o.reason||'—'}</div></div>
     <div class="info-item" style="margin-top:8px"><div class="info-label">🏆 الفوائد المتوقعة</div><div class="info-val" style="line-height:1.7">${o.benefits||'—'}</div></div>
-    <div class="info-item" style="margin-top:8px"><div class="info-label">📋 المتطلبات الأساسية</div><div class="info-val" style="line-height:1.7">${o.requirements||'—'}</div></div>
+    <div class="info-item" style="margin-top:8px"><div class="info-label">📋 المتطلبات</div><div class="info-val" style="line-height:1.7">${o.requirements||'—'}</div></div>
     <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
       <a class="btn-link" href="${o.link||'#'}" target="_blank"><i class="ti ti-external-link"></i>فتح الموقع الرسمي</a>
       <button class="btn-close" onclick="document.getElementById('modalOverlay').classList.remove('show')">إغلاق</button>
@@ -595,11 +581,7 @@ function showToast(msg){
 (function init(){
   loadProfile();loadSettings();
   const saved=ld(SK.results);
-  if(saved&&saved.length>0){
-    renderDashboard(saved);renderOpps(saved,'all');
-    showTab('search');
-    document.getElementById('dashboardArea').style.display='block';
-  }
+  if(saved&&saved.length>0){renderDashboard(saved);renderOpps(saved,'all');}
 })();
 </script>
 </body>
